@@ -1,0 +1,2 @@
+# jhhc-baseframework-data
+基于spring data的CrudRepository的jdbc和mongodb实现
