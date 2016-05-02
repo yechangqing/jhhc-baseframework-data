@@ -4,10 +4,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,7 +20,8 @@ import org.springframework.stereotype.Repository;
  * @author yecq
  */
 @Repository
-public class JhhcMongoCrudRepository implements CrudRepository<Object, String> {
+@Scope("prototype")
+public class JhhcMongoCrudRepository implements PagingAndSortingRepository<Object, String> {
 
     @Autowired
     private MongoTemplate mongo;
@@ -153,5 +158,15 @@ public class JhhcMongoCrudRepository implements CrudRepository<Object, String> {
     public void deleteAll() {
         checkCollection();
         this.mongo.dropCollection(this.collection);
+    }
+
+    @Override
+    public Iterable<Object> findAll(Sort sort) {
+        throw new UnsupportedOperationException("排序功能待开发");
+    }
+
+    @Override
+    public Page<Object> findAll(Pageable pgbl) {
+        throw new UnsupportedOperationException("分页功能待开发");
     }
 }

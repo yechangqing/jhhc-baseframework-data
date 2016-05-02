@@ -48,3 +48,13 @@ create view v_user as
 	user
 	join student on user.name=student.name
 ;
+
+
+### 分页测试
+create table pageobj
+(
+    id int unsigned auto_increment,
+    value varchar(50) not null comment '内容',
+
+    primary key (id)
+);

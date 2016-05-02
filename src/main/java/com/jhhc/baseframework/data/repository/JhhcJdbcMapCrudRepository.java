@@ -6,8 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +22,8 @@ import org.springframework.stereotype.Repository;
  * @author yecq
  */
 @Repository
-public class JhhcJdbcMapCrudRepository implements CrudRepository<Map<String, Object>, String> {
+@Scope("prototype")
+public class JhhcJdbcMapCrudRepository implements PagingAndSortingRepository<Map<String, Object>, String> {
 
     @Autowired
     protected JdbcTemplate jdbc;
@@ -192,5 +198,28 @@ public class JhhcJdbcMapCrudRepository implements CrudRepository<Map<String, Obj
     public void deleteAll() {
         checkTable();
         this.jdbc.update("delete from " + this.table + " where true");
+    }
+
+    @Override
+    public Iterable<Map<String, Object>> findAll(Sort sort) {
+        // 这个暂时还没做
+        throw new UnsupportedOperationException("排序功能待开发");
+    }
+
+    // 实际的Pagable接口实现类为PageRequest，Page接口实现类为PageImpl
+    @Override
+    public Page<Map<String, Object>> findAll(Pageable pgbl) {
+        checkTable();
+        if (pgbl == null) {
+            throw new IllegalArgumentException("分页参数为空");
+        }
+        int current = pgbl.getPageNumber();
+        int size = pgbl.getPageSize();
+        if (current < 1) {
+            return new PageImpl(new LinkedList());
+        }
+
+        List<Map<String, Object>> ret = this.jdbc.queryForList("select * from " + this.table + " limit ?,?", (current - 1) * size, size);
+        return new PageImpl(ret);
     }
 }

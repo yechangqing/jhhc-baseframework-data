@@ -6,7 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +19,8 @@ import org.springframework.stereotype.Component;
  * @author yecq
  */
 @Component
-public class JhhcJdbcCrudRepository implements CrudRepository<Object, String> {
+@Scope("prototype")
+public class JhhcJdbcCrudRepository implements PagingAndSortingRepository<Object, String> {
 
     @Autowired
     private JhhcJdbcMapCrudRepository mprepo;
@@ -176,6 +182,29 @@ public class JhhcJdbcCrudRepository implements CrudRepository<Object, String> {
         checkTable();
         this.mprepo.setTable(this.table);
         this.mprepo.deleteAll();
+    }
+
+    @Override
+    public Iterable<Object> findAll(Sort sort) {
+        throw new UnsupportedOperationException("Not 排序功能待开发");
+    }
+
+    @Override
+    public Page<Object> findAll(Pageable pgbl) {
+        if (pgbl == null) {
+            throw new IllegalArgumentException("分页参数为空");
+        }
+        checkTable();
+        checkClass();
+        this.mprepo.setTable(this.table);
+        List<Map<String, Object>> ret1 = this.mprepo.findAll(pgbl).getContent();
+        // 转为class
+        List ret2 = new LinkedList();
+        Iterator<Map<String, Object>> ite2 = ret1.iterator();
+        while (ite2.hasNext()) {
+            ret2.add(map2Object(ite2.next(), cls));
+        }
+        return new PageImpl(ret2);
     }
 
 }

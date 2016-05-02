@@ -6,16 +6,16 @@ import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.Map;
 import org.dbunit.DatabaseUnitException;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.CrudRepository;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  *
@@ -73,7 +73,7 @@ public class JhhcMongoRepositoryTest extends Base {
         Have hv = new Have();
         hv.setName("asdf");
         hv.setAge(100);
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         repo.save(hv);
         hv = this.mongo.findOne(new Query(where("name").is("asdf")), Have.class);
         assertThat(hv.getId(), notNullValue());
@@ -85,7 +85,7 @@ public class JhhcMongoRepositoryTest extends Base {
         Have hv = new Have();
         hv.setName("asdf");
         hv.setAge(100);
-        CrudRepository repo = this.fac.getMongoRepository("empty");    // 用另外一个名字存
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("empty");    // 用另外一个名字存
         repo.save(hv);  // 取了名字的，以名字为准
         this.fac.changeMongoCollection("empty");
         hv = this.mongo.findOne(new Query(where("name").is("asdf")), Have.class, "empty");
@@ -101,7 +101,7 @@ public class JhhcMongoRepositoryTest extends Base {
         Have hv2 = new Have();
         hv2.setName("a2");
         hv2.setAge(34);
-        CrudRepository repo = this.fac.getMongoRepository(null);
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository(null);
         repo.save(asList(hv1, hv2));
         List ret = this.mongo.findAll(Have.class);
         assertThat(ret.size(), is(5));
@@ -109,7 +109,7 @@ public class JhhcMongoRepositoryTest extends Base {
 
     @Test
     public void test_findOne() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         Map hv = (Map) repo.findOne("2"); // 默认的返回是Map
         assertThat(hv.get("_id") + "", is("2"));
         assertThat(hv.get("name") + "", is("abcd"));
@@ -120,13 +120,13 @@ public class JhhcMongoRepositoryTest extends Base {
     public void test_findOne1() {
         this.expectedEx.expect(IllegalStateException.class);
         this.expectedEx.expectMessage("collection为空");
-        CrudRepository repo = this.fac.getMongoRepository(null);
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository(null);
         Map hv = (Map) repo.findOne("2"); // 默认的返回是Map
     }
 
     @Test
     public void test_findOne2() {
-        CrudRepository repo = this.fac.getMongoRepository("have", Have.class);
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have", Have.class);
         Have hv = (Have) repo.findOne("2");
         assertThat(hv.getId(), is("2"));
         assertThat(hv.getName(), is("abcd"));
@@ -135,70 +135,70 @@ public class JhhcMongoRepositoryTest extends Base {
 
     @Test
     public void test_findOne3() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         Have hv = (Have) repo.findOne("101");
         assertThat(hv, nullValue());
     }
 
     @Test
     public void test_findOne4() {
-        CrudRepository repo = this.fac.getMongoRepository("have", Have.class);
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have", Have.class);
         Have hv = (Have) repo.findOne("99");
         assertThat(hv, nullValue());
     }
 
     @Test
     public void test_exists() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         assertThat(repo.exists("3"), is(true));
         assertThat(repo.exists("33"), is(false));
 
-        repo = this.fac.getMongoRepository("have", Have.class);
+        repo = this.fac.getMongoPagingAndSortingRepository("have", Have.class);
         assertThat(repo.exists("3"), is(true));
         assertThat(repo.exists("33"), is(false));
     }
 
     @Test
     public void test_findAll() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         List list = (List) repo.findAll();
         assertThat(list.size(), is(3));
 
-        repo = this.fac.getMongoRepository("empty");
+        repo = this.fac.getMongoPagingAndSortingRepository("empty");
         list = (List) repo.findAll();
         assertThat(list.size(), is(0));
     }
 
     @Test
     public void test_findAll1() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         List list = (List) repo.findAll(asList("2", "3", "16"));
         assertThat(list.size(), is(2));
 
-        repo = this.fac.getMongoRepository("empty");
+        repo = this.fac.getMongoPagingAndSortingRepository("empty");
         list = (List) repo.findAll(asList("11", "12"));
         assertThat(list.size(), is(0));
     }
 
     @Test
     public void test_count() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         assertThat(repo.count(), is(3L));
 
-        repo = this.fac.getMongoRepository("empty");
+        repo = this.fac.getMongoPagingAndSortingRepository("empty");
         assertThat(repo.count(), is(0L));
     }
 
     @Test
     public void test_delete() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         repo.delete("1");
         assertThat(repo.count(), is(2L));
     }
 
     @Test
     public void test_delete1() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         repo.delete("11");
         assertThat(repo.count(), is(3L));
     }
@@ -209,7 +209,7 @@ public class JhhcMongoRepositoryTest extends Base {
         hv.setId("2");  // 必须加上id才会删
         hv.setName("abcd1");  // 加上这些也没用
         hv.setAge(92);
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         repo.delete(hv);
         assertThat(repo.count(), is(2L));
         assertThat(this.mongo.findById("2", Have.class), nullValue());
@@ -221,9 +221,9 @@ public class JhhcMongoRepositoryTest extends Base {
         hv.setId("2");  // 必须加上id才会删
         hv.setName("abcd1");  // 加上这些也没用
         hv.setAge(92);
-        CrudRepository repo = this.fac.getMongoRepository(null);
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository(null);
         repo.delete(hv);
-        repo = this.fac.getMongoRepository("have");
+        repo = this.fac.getMongoPagingAndSortingRepository("have");
         assertThat(repo.count(), is(2L));
         assertThat(this.mongo.findById("2", Have.class), nullValue());
     }
@@ -236,15 +236,15 @@ public class JhhcMongoRepositoryTest extends Base {
         hv.setAge(92);
         Have hv1 = new Have();
         hv1.setId("1");  // 必须加上id才会删
-        CrudRepository repo = this.fac.getMongoRepository();
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository();
         repo.delete(asList(hv, hv1));
-        repo = this.fac.getMongoRepository("have");
+        repo = this.fac.getMongoPagingAndSortingRepository("have");
         assertThat(repo.count(), is(1L));
     }
 
     @Test
     public void test_deleteAll() {
-        CrudRepository repo = this.fac.getMongoRepository("have");
+        CrudRepository repo = this.fac.getMongoPagingAndSortingRepository("have");
         repo.deleteAll();
         assertThat(repo.count(), is(0L));
     }

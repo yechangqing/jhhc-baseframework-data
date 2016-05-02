@@ -10,4 +10,31 @@
     <student id="12" name="sunwenqin" depart="ise"/>
     
     <!--<info id="2" info="测试信息" user_id="4"/>-->
+    
+    <pageobj id="1" value="item_1"/>
+    <pageobj id="2" value="item_2"/>
+    <pageobj id="3" value="item_3"/>
+    <pageobj id="4" value="item_4"/>
+    <pageobj id="5" value="item_5"/>
+    
+    <pageobj id="6" value="item_6"/>
+    <pageobj id="7" value="item_7"/>
+    <pageobj id="8" value="item_8"/>
+    <pageobj id="9" value="item_9"/>
+    <pageobj id="10" value="item_10"/>
+    
+    <pageobj id="11" value="item_11"/>
+    <pageobj id="12" value="item_12"/>
+    <pageobj id="13" value="item_13"/>
+    <pageobj id="14" value="item_14"/>
+    <pageobj id="15" value="item_15"/>
+    
+    <pageobj id="16" value="item_16"/>
+    <pageobj id="17" value="item_17"/>
+    <pageobj id="18" value="item_18"/>
+    <pageobj id="19" value="item_19"/>
+    <pageobj id="20" value="item_20"/>
+    
+    <pageobj id="21" value="item_21"/>
+    <pageobj id="22" value="item_22"/>
 </dataset>
