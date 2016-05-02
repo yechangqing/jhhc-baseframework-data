@@ -3,9 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jhhc.baseframework</groupId>
     <artifactId>baseframework-data</artifactId>
-    <version>2.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>${artifactId}-${version}</name>
+    
+    <description>
+        1.1：修改了类名，去掉了Crud字样，已具备分页功能（mongo的暂没有）
+    </description>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
