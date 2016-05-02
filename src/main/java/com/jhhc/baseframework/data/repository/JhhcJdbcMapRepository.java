@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class JhhcJdbcMapCrudRepository implements PagingAndSortingRepository<Map<String, Object>, String> {
+public class JhhcJdbcMapRepository implements PagingAndSortingRepository<Map<String, Object>, String> {
 
     @Autowired
     protected JdbcTemplate jdbc;

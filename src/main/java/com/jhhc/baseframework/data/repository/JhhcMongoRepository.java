@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class JhhcMongoCrudRepository implements PagingAndSortingRepository<Object, String> {
+public class JhhcMongoRepository implements PagingAndSortingRepository<Object, String> {
 
     @Autowired
     private MongoTemplate mongo;

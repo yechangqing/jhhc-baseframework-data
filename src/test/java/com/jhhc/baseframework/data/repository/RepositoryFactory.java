@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
  * @author yecq
  */
 @Component
-public class CrudRepositoryFactory {
+public class RepositoryFactory {
 
     @Autowired
-    private JhhcJdbcMapCrudRepository repo;
+    private JhhcJdbcMapRepository repo;
 
     @Autowired
-    private JhhcJdbcCrudRepository reg;
+    private JhhcJdbcRepository reg;
 
     @Autowired
-    private JhhcMongoCrudRepository mongo;
+    private JhhcMongoRepository mongo;
 
     public PagingAndSortingRepository getMapPagingAndSortingRepository(String table) {
         this.repo.setTable(table);

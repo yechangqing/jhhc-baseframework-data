@@ -22,15 +22,30 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 
 /**
  *
  * @author yecq
  */
-public class JhhcJdbcCrudRepositoryTest extends Base {
+public class JhhcJdbcRepositoryTest extends Base {
 
     @Autowired
-    private CrudRepositoryFactory factory;
+    private RepositoryFactory factory;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -49,7 +64,7 @@ public class JhhcJdbcCrudRepositoryTest extends Base {
             assertThat(map.get("name") + "", is("abcd"));
             assertThat(Double.parseDouble(map.get("age") + ""), closeTo(23, 0));
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(JhhcJdbcCrudRepositoryTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JhhcJdbcRepositoryTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

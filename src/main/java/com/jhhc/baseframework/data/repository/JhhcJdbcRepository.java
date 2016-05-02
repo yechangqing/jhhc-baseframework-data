@@ -20,10 +20,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class JhhcJdbcCrudRepository implements PagingAndSortingRepository<Object, String> {
+public class JhhcJdbcRepository implements PagingAndSortingRepository<Object, String> {
 
     @Autowired
-    private JhhcJdbcMapCrudRepository mprepo;
+    private JhhcJdbcMapRepository mprepo;
     private String table;
     private Class cls;
 
