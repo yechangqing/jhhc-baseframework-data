@@ -33,7 +33,6 @@ import org.springframework.stereotype.Component;
  * @author yecq
  */
 @Component
-@Scope("prototype")     // 不注明这个，在使用时会出现问题，导致各个对象公用一个record
 public class JhhcSqlOperator {
 
     private static boolean log = false;
